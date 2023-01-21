@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { createTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-task-filter.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { Task, taskStatus } from './task.module';
 import { TasksService } from './tasks.service';
 
@@ -42,7 +43,11 @@ export class TasksController {
   }
 
   @Patch('/:id/status')
-  patchTaskStatus(@Param('id') id: string, @Body('status') status: taskStatus) {
+  patchTaskStatus(
+    @Param('id') id: string,
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+  ) {
+    const { status } = updateTaskStatusDto;
     return this.tasksService.patchTaskStatus(id, status);
   }
 }
