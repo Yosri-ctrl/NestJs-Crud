@@ -2,13 +2,23 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TasksModule } from './tasks/tasks.module';
 
-import * as path from 'path';
-const baseDir = path.join(__dirname, '../');
-const entitiesPath = `${baseDir}${process.env.TYPEORM_ENTITIES}`;
-const migrationPath = `${baseDir}${process.env.TYPEORM_MIGRATIONS}`;
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TasksModule],
+  imports: [
+    TasksModule,
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.TYPEORM_HOST,
+      database: process.env.TYPEORM_DATABASE,
+      username: process.env.TYPEORM_USERNAME,
+      password: process.env.TYPEORM_PASSWORD,
+      port: parseInt(process.env.TYPEORM_PORT, 10),
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
+  ],
   controllers: [],
   providers: [],
 })
