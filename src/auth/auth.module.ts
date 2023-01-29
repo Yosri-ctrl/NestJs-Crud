@@ -13,7 +13,9 @@ import { JWTStrategy } from './jwt-strategy';
   providers: [AuthService, UserRepository, JWTStrategy],
   controllers: [AuthController],
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: [`.env.stage.${process.env.STAGE}`],
+    }),
     TypeOrmModule.forFeature([User]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
