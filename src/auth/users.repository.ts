@@ -10,7 +10,7 @@ import { AuthCreadentialDto } from './dto/auth-credential.dto';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { jwtPlayload } from 'src/auth/auth-jwt.interface';
+import { jwtPlayload } from '../auth/auth-jwt.interface';
 
 @Injectable()
 export class UserRepository {
