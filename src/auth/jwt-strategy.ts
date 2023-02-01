@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,6 +19,7 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
   }
+  private logger = new Logger('JWT Strategy');
 
   async validate(playload: jwtPlayload): Promise<User> {
     const { username } = playload;
@@ -27,6 +28,7 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
     });
 
     if (!user) {
+      this.logger.error(`Failed authorize user: "${user.username}"`);
       throw new UnauthorizedException();
     }
 

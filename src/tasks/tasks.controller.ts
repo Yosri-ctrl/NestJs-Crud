@@ -40,6 +40,9 @@ export class TasksController {
 
   @Get('/:id')
   getOneTask(@Param('id') id: string, @GetUser() user: User): Promise<Task> {
+    this.logger.verbose(
+      `User "${user.username}" retrieving data for task with id: ${id}`,
+    );
     return this.tasksService.getTaskById(id, user);
   }
 
@@ -63,6 +66,9 @@ export class TasksController {
     @Param('id') id: string,
     @GetUser() user: User,
   ): Promise<void> {
+    this.logger.verbose(
+      `Deleting task with id: ${id} for user: ${user.username}`,
+    );
     return this.tasksService.deleteTaskById(id, user);
   }
 
@@ -73,6 +79,9 @@ export class TasksController {
     @GetUser() user: User,
   ): Promise<Task> {
     const { status } = updateTaskStatusDto;
+    this.logger.verbose(
+      `Updating task with id: ${id} for user: ${user.username} to status: ${status}`,
+    );
     return this.tasksService.patchTaskStatus(id, status, user);
   }
 }

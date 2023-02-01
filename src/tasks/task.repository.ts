@@ -55,6 +55,7 @@ export class TaskRepository {
     });
 
     if (!found) {
+      this.logger.error(`Failed to retrieve data for task "${found.id}"`);
       throw new NotFoundException(`Task with ID: ${id} not found`);
     }
     return found;
@@ -75,6 +76,7 @@ export class TaskRepository {
   async deleteTaskById(id: string, user: User): Promise<void> {
     const found = await this.taskEntityRepo.delete({ id, user });
     if (found.affected == 0) {
+      this.logger.error(`Failed to retrieve data for task "${id}"`);
       throw new NotFoundException(`Task with ${id} not found`);
     }
   }
